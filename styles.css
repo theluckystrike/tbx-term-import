@@ -1,0 +1,43 @@
+.tbx-term-import-modal {
+	width: min(1050px, 94vw);
+	}
+
+.tbx-term-import-modal .tbx-field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-2);
+	margin-bottom: var(--size-4-3);
+	}
+
+.tbx-term-import-modal .tbx-controls {
+	display: flex;
+	gap: var(--size-4-4);
+	flex-wrap: wrap;
+	}
+
+.tbx-term-import-modal .tbx-preview {
+	max-height: 40vh;
+	overflow: auto;
+	margin: var(--size-4-3) 0;
+	}
+
+.tbx-term-import-modal table {
+	width: 100%;
+	border-collapse: collapse;
+	}
+
+.tbx-term-import-modal th, .tbx-term-import-modal td {
+	padding: var(--size-4-2);
+	border: 1px solid var(--background-modifier-border);
+	text-align: left;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	}
+
+.tbx-term-import-modal .tbx-error {
+	color: var(--text-error);
+	}
+
+.tbx-term-import-modal .tbx-file-name {
+	font-weight: var(--font-semibold);
+	}

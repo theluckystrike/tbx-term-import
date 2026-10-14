@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<martif><text><body>
+<termEntry id="c1"><descrip type="definition">A device that moves liquid.</descrip><langSet xml:lang="en"><tig><term>pump</term></tig><tig><term>water pump</term></tig></langSet><langSet xml:lang="fr"><ntig><termGrp><term>pompe</term></termGrp></ntig></langSet><langSet xml:lang="de"><tig><term>Pumpe</term></tig></langSet></termEntry>
+<termEntry id="c2"><descrip type="definition">A valve that stops reverse flow.</descrip><langSet xml:lang="en"><tig><term>check valve</term></tig></langSet><langSet xml:lang="fr"><tig><term>clapet anti-retour</term></tig></langSet><langSet xml:lang="de"><tig><term>Rückschlagventil</term></tig></langSet></termEntry>
+<termEntry id="c3"><descrip type="definition">Pressure at the inlet.
+Check the unit before use.</descrip><langSet xml:lang="en"><tig><term>inlet pressure</term></tig></langSet><langSet xml:lang="de"><tig><term>Einlassdruck</term></tig></langSet></termEntry>
+<termEntry><langSet xml:lang="en"><tig><term>record without an ID</term></tig></langSet></termEntry>
+</body></text></martif>

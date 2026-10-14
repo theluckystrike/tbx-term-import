@@ -1,0 +1,1048 @@
+{
+  "slug": "tbx-term-import",
+  "module": "products/tbx-term-import/src/vectors.ts",
+  "function": "runVector",
+  "cases": [
+    {
+      "name": "English and French labels",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "English and German exclude French",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet><langSet xml:lang=\"de\"><tig><term>Pumpe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "de"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "de",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "Pumpe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Alternate terms retain source order",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig><tig><term>water pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump",
+              "water pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Concept definition retained",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><descrip type=\"definition\">Moves liquid.</descrip><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [
+              "Moves liquid."
+            ],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Namespace prefix uses local names",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<tb:martif xmlns:tb=\"urn:example\"><text><body><tb:termEntry id=\"c1\"><tb:langSet xml:lang=\"en\"><tb:tig><tb:term>pump</tb:term></tb:tig></tb:langSet><tb:langSet xml:lang=\"fr\"><tb:tig><tb:term>pompe</tb:term></tb:tig></tb:langSet></tb:termEntry></body></text></tb:martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Pipe and newline stay in the model",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><descrip type=\"definition\">Line one\nLine two</descrip><langSet xml:lang=\"en\"><tig><term>A|B</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "A|B"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [
+              "Line one\nLine two"
+            ],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Broken XML refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><termEntry></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "The XML is not valid."
+      }
+    },
+    {
+      "name": "ENTITY declaration refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<!ENTITY x \"pump\"><martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "DTD and ENTITY declarations are not supported."
+      }
+    },
+    {
+      "name": "TBX v3 refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<tbx><conceptEntry id=\"c1\"/></tbx>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "Unsupported dialect: TBX v3 conceptEntry is not supported."
+      }
+    },
+    {
+      "name": "Missing target remains visible",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet></termEntry><termEntry id=\"c2\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [],
+            "definitions": [],
+            "missing": [
+              "fr"
+            ]
+          },
+          {
+            "id": "c2",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": [
+          "c1: missing fr."
+        ]
+      }
+    },
+    {
+      "name": "Existing glossary gets a suffix",
+      "args": [
+        {
+          "op": "path",
+          "title": "Glossary",
+          "existing": [
+            "Glossary.md"
+          ]
+        }
+      ],
+      "expected": "Glossary-1.md"
+    },
+    {
+      "name": "ntig termGrp supported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><ntig><termGrp><term>pump</term></termGrp></ntig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "DTD declaration refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<!DOCTYPE martif><martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "DTD and ENTITY declarations are not supported."
+      }
+    },
+    {
+      "name": "Exact regional language labels",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en-US\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"en\"><tig><term>generic</term></tig></langSet><langSet xml:lang=\"fr-CA\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en-US",
+          "target": "fr-CA"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en-US",
+        "target": "fr-CA",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Same language selection refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "en"
+        }
+      ],
+      "expected": {
+        "error": "Select two different exact xml:lang values from the file."
+      }
+    },
+    {
+      "name": "Absent language selection refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "de"
+        }
+      ],
+      "expected": {
+        "error": "Select two different exact xml:lang values from the file."
+      }
+    },
+    {
+      "name": "Missing ID is reported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [
+          "Record 1: missing concept ID."
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Duplicate ID is reported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [
+          "Record 2: duplicate concept ID c1."
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Empty terms are reported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"empty\"><langSet xml:lang=\"en\"><tig><term> </term></tig></langSet><langSet xml:lang=\"fr\"><tig><term></term></tig></langSet></termEntry><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [
+          "empty: no supported nonempty terms."
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Unselected-only concept is reported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"de-only\"><langSet xml:lang=\"de\"><tig><term>Pumpe</term></tig></langSet></termEntry><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [
+          "de-only: no terms in the selected languages."
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Missing source remains visible",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry><termEntry id=\"c2\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": [
+              "en"
+            ]
+          },
+          {
+            "id": "c2",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": [
+          "c1: missing en."
+        ]
+      }
+    },
+    {
+      "name": "Non UTF8 declaration refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "Use a UTF-8 XML file."
+      }
+    },
+    {
+      "name": "Language definitions retained",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet xml:lang=\"en\"><tig><term>pump</term></tig><descrip type=\"definition\">English definition.</descrip></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig><descrip type=\"definition\">Définition.</descrip></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [
+              "English definition.",
+              "Définition."
+            ],
+            "missing": []
+          }
+        ],
+        "skipped": [],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Blank language label is reported",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<martif><text><body><termEntry id=\"c1\"><langSet><tig><term>hidden</term></tig></langSet><langSet xml:lang=\"en\"><tig><term>pump</term></tig></langSet><langSet xml:lang=\"fr\"><tig><term>pompe</term></tig></langSet></termEntry></body></text></martif>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "version": 1,
+        "source": "en",
+        "target": "fr",
+        "rows": [
+          {
+            "id": "c1",
+            "source": [
+              "pump"
+            ],
+            "target": [
+              "pompe"
+            ],
+            "definitions": [],
+            "missing": []
+          }
+        ],
+        "skipped": [
+          "c1: a langSet has no xml:lang label."
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "name": "Unknown dialect refused",
+      "args": [
+        {
+          "op": "read",
+          "xml": "<root/>",
+          "source": "en",
+          "target": "fr"
+        }
+      ],
+      "expected": {
+        "error": "Unsupported dialect: no supported termEntry records were found."
+      }
+    },
+    {
+      "name": "Table punctuation and HTML are inert",
+      "args": [
+        {
+          "op": "cell",
+          "text": "A|B\n<script>[x](y)</script>"
+        }
+      ],
+      "expected": "A&#124;B<br>&#60;script&#62;&#91;x&#93;&#40;y&#41;&#60;/script&#62;"
+    },
+    {
+      "name": "Traversal title refused",
+      "args": [
+        {
+          "op": "path",
+          "title": "../Glossary",
+          "existing": []
+        }
+      ],
+      "expected": {
+        "error": "Use a note name with no path or reserved characters."
+      }
+    },
+    {
+      "name": "Second suffix skips existing notes",
+      "args": [
+        {
+          "op": "path",
+          "title": "Glossary.md",
+          "existing": [
+            "Glossary.md",
+            "Glossary-1.md"
+          ]
+        }
+      ],
+      "expected": "Glossary-2.md"
+    },
+    {
+      "name": "Concept merge changes adds and retains",
+      "args": [
+        {
+          "op": "merge",
+          "old": {
+            "version": 1,
+            "source": "en",
+            "target": "fr",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              },
+              {
+                "id": "retained",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          },
+          "next": {
+            "version": 1,
+            "source": "en",
+            "target": "fr",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "new pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              },
+              {
+                "id": "added",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "glossary": {
+          "version": 1,
+          "source": "en",
+          "target": "fr",
+          "rows": [
+            {
+              "id": "c1",
+              "source": [
+                "new pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            },
+            {
+              "id": "retained",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            },
+            {
+              "id": "added",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "c1",
+            "kind": "changed",
+            "before": {
+              "id": "c1",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            },
+            "after": {
+              "id": "c1",
+              "source": [
+                "new pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          },
+          {
+            "id": "retained",
+            "kind": "retained",
+            "before": {
+              "id": "retained",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            },
+            "after": {
+              "id": "retained",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          },
+          {
+            "id": "added",
+            "kind": "added",
+            "before": null,
+            "after": {
+              "id": "added",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Merge language mismatch refused",
+      "args": [
+        {
+          "op": "merge",
+          "old": {
+            "version": 1,
+            "source": "en",
+            "target": "fr",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              },
+              {
+                "id": "retained",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          },
+          "next": {
+            "version": 1,
+            "source": "en",
+            "target": "de",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "new pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              },
+              {
+                "id": "added",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "error": "The merge requires the same source and target language labels."
+      }
+    },
+    {
+      "name": "Unchanged merge stays unchanged",
+      "args": [
+        {
+          "op": "merge",
+          "old": {
+            "version": 1,
+            "source": "en",
+            "target": "fr",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          },
+          "next": {
+            "version": 1,
+            "source": "en",
+            "target": "fr",
+            "rows": [
+              {
+                "id": "c1",
+                "source": [
+                  "pump"
+                ],
+                "target": [
+                  "pompe"
+                ],
+                "definitions": [],
+                "missing": []
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "glossary": {
+          "version": 1,
+          "source": "en",
+          "target": "fr",
+          "rows": [
+            {
+              "id": "c1",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "c1",
+            "kind": "unchanged",
+            "before": {
+              "id": "c1",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            },
+            "after": {
+              "id": "c1",
+              "source": [
+                "pump"
+              ],
+              "target": [
+                "pompe"
+              ],
+              "definitions": [],
+              "missing": []
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

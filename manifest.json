@@ -1,0 +1,11 @@
+{
+	"id": "tbx-term-import",
+	"name": "TBX Term Import",
+	"version": "1.0.0",
+	"minAppVersion": "1.13.4",
+	"description": "Import local term records with language labels into a glossary table.",
+	"author": "Michael Lip",
+	"authorUrl": "https://github.com/theluckystrike",
+	"fundingUrl": "https://github.com/sponsors/theluckystrike",
+	"isDesktopOnly": false
+}
