@@ -1,0 +1,32 @@
+{
+	"id": "tbx-term-import",
+	"name": "TBX Term Import",
+	"version": "1.1.0",
+	"changes": [
+		"New Send feedback command. It opens a page where you can report a problem or suggest an idea.",
+		"Adds local v2 term record import, exact language selection, glossary reports and batch import."
+	],
+	"changes_user": [
+		"New Send feedback command. It opens a page where you can report a problem or suggest an idea.",
+		"Settings now end with a More from NoteMods group, where you can turn this tab off or open it again."
+	],
+	"tip": "Language labels are compared as written, so en, en-US and en-GB are separate choices. Pick the exact two labels for your columns.",
+	"thanks": "Hi, I am Michael, a solo developer in Poland. TBX Term Import is one of over 100 small plugins that I make. Thank you for using it to bring your term bases into Obsidian.",
+	"related": [
+		{
+			"id": "glossary-term-audit",
+			"name": "Glossary Term Audit",
+			"blurb": "Check translated paragraph pairs against approved and forbidden glossary terms."
+		},
+		{
+			"id": "csv-glossary-lookup",
+			"name": "CSV Glossary Lookup",
+			"blurb": "Look up selected terms in a local CSV glossary and insert a meaning."
+		},
+		{
+			"id": "translation-token-audit",
+			"name": "Translation Token Audit",
+			"blurb": "Find missing, added, or changed placeholders in translated line pairs."
+		}
+	]
+}

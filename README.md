@@ -64,6 +64,8 @@ For a merge, use Merge a later term import (pro). Select Choose prior glossary a
 
 ## Settings
 
+After a minor or major update, this plugin opens one What's new tab in the background. The tab and settings card suggest other NoteMods plugins and Zovo Chat and link to notemods.com for feedback ([privacy](https://notemods.com/privacy/)). The tab sends no data. Turn the tab off in Settings.
+
 New glossary name sets the proposed output name. The default is Glossary. The modal lets you change the name for the current import. Use a plain note name without a folder path or reserved filename characters. The plugin adds a suffix when an existing file or folder occupies the proposed path.
 
 The Pro section contains the sponsor link, GitHub sign in, status, refresh and sign out controls. These controls follow the shared GitHub Sponsors check described below. The importer does not save a selected source file path in its settings.
