@@ -1,7 +1,7 @@
-import { Notice, Plugin, normalizePath, type TFile } from 'obsidian';
+import { Plugin, normalizePath, type TFile } from 'obsidian';
 import type { SponsorsManager } from './license/index';
 import { createGitHubSponsors } from './license/github-obsidian';
-import { bindPro, isPro, resetPro, SPONSORS } from './pro';
+import { bindPro, isPro, resetPro, SPONSORS, proNotice } from './pro';
 import { DEFAULT_SETTINGS, normalizeSettings, TbxTermImportSettingTab, type TbxTermImportSettings } from './settings';
 import { ImportModal, type ImportMode } from './modal';
 import { freePath, renderGlossary, type Glossary, type Preview, type Change } from './reader';
@@ -37,7 +37,7 @@ export default class TbxTermImportPlugin extends Plugin {
  }
  openImport(mode: ImportMode = 'single'): ImportModal | null {
   if (mode !== 'single' && !isPro()) {
-   new Notice('This is a pro feature. Sponsor on GitHub, then sign in from the plugin settings.');
+   proNotice('This is a pro feature.');
    return null;
   }
   const modal = new ImportModal(this, mode);
