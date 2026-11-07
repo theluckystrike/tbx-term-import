@@ -1,7 +1,10 @@
 {
 	"name": "tbx-term-import",
-	"repository": {"type": "git", "url": "git+https://github.com/theluckystrike/tbx-term-import.git"},
-	"version": "1.1.1",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/theluckystrike/tbx-term-import.git"
+	},
+	"version": "1.1.2",
 	"private": true,
 	"description": "Import local term records with language labels into a glossary table.",
 	"main": "main.js",

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2
+
+### Patch Changes
+
+- 1499b68: The Pro notice of TBX Term Import now says that one payment turns on Pro in every NoteMods plugin. The package file now names the public repository of the plugin.
+
 ## 1.1.1
 
 ### Patch Changes
