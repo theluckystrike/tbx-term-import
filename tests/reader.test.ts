@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { runVector } from '../src/vectors';
 import { MAX_BYTES, MAX_RECORDS, readTbx, preview, renderGlossary, readGlossary, readLocalFile } from '../src/reader';
 import vectors from './fixtures/vectors.json';
+import { budget } from './time-scale';
 
 describe('golden acceptance vectors', () => {
 	for (const vector of vectors.cases) it(vector.name, () => expect(runVector(vector.args[0] as never)).toEqual(vector.expected));
@@ -18,7 +19,7 @@ describe('reader limits and inert output', () => {
 	it('refuses the byte and record limits', () => {
 		expect(() => readTbx(' '.repeat(MAX_BYTES + 1))).toThrow('4 MiB');
 		expect(() => readTbx('<martif>' + '<termEntry/>'.repeat(MAX_RECORDS + 1) + '</martif>')).toThrow('10000');
-	}, 120000);
+	}, budget(120000));
 	it('keeps dangerous text inert and round trips merge data', () => {
 		const g = preview(readTbx('<martif><termEntry id="c1"><langSet xml:lang="en"><tig><term>&lt;img src=x onerror=alert(1)&gt;|```</term></tig></langSet><langSet xml:lang="fr"><tig><term>pompe</term></tig></langSet><descrip type="definition">a\nb</descrip></termEntry></martif>'), 'en', 'fr');
 		const markdown = renderGlossary(g, '<source>.tbx', [], []);
